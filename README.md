@@ -12,9 +12,9 @@ go get github.com/bolanosdev/go-snacks
 
 ### Collections
 
-A generic `List` type that provides functional programming utilities for working with slices.
+Generic `List` and `Map` types that provide functional programming utilities for working with slices and maps.
 
-#### Usage
+#### List Usage
 
 ```go
 import "github.com/bolanosdev/go-snacks/collections"
@@ -39,6 +39,44 @@ reversed := list.Reverse()
 
 // Get underlying slice
 slice := list.Values()
+```
+
+#### Map Usage
+
+```go
+import "github.com/bolanosdev/go-snacks/collections"
+
+m := collections.Map[string, int]{"a": 1, "b": 2, "c": 3}
+
+// Get and Set
+val, ok := m.Get("a")
+m.Set("d", 4)
+
+// Has and Delete
+if m.Has("a") {
+    m.Delete("a")
+}
+
+// Keys and Values
+keys := m.Keys()
+values := m.Values()
+
+// Filter
+filtered := m.Filter(func(k string, v int) bool {
+    return v > 1
+})
+
+// Find
+key, val, found := m.Find(func(k string, v int) bool {
+    return v == 2
+})
+
+// Any and All
+hasLarge := m.Any(func(k string, v int) bool { return v > 10 })
+allPositive := m.All(func(k string, v int) bool { return v > 0 })
+
+// Copy
+copied := m.Copy()
 ```
 
 ### AutoMapper
