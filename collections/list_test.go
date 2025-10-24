@@ -92,3 +92,49 @@ func TestReverse(t *testing.T) {
 	reversed := list.Reverse()
 	require.Equal(t, List[int]{5, 4, 3, 2, 1}, reversed)
 }
+
+func TestToMap(t *testing.T) {
+	type Person struct {
+		ID   int
+		Name string
+	}
+
+	list := List[Person]{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
+	}
+
+	m := ToMap(list, func(p Person) int { return p.ID })
+
+	require.Equal(t, 3, m.Len())
+	val, ok := m.Get(1)
+	require.True(t, ok)
+	require.Equal(t, "Alice", val.Name)
+}
+
+func TestGroupBy(t *testing.T) {
+	type Person struct {
+		Age  int
+		Name string
+	}
+
+	list := List[Person]{
+		{Age: 25, Name: "Alice"},
+		{Age: 30, Name: "Bob"},
+		{Age: 25, Name: "Charlie"},
+		{Age: 30, Name: "David"},
+	}
+
+	grouped := GroupBy(list, func(p Person) int { return p.Age })
+
+	require.Equal(t, 2, grouped.Len())
+
+	age25, ok := grouped.Get(25)
+	require.True(t, ok)
+	require.Equal(t, 2, len(age25))
+
+	age30, ok := grouped.Get(30)
+	require.True(t, ok)
+	require.Equal(t, 2, len(age30))
+}

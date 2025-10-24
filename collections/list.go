@@ -97,3 +97,20 @@ func (s List[T]) Reverse() List[T] {
 func (s List[T]) Values() []T {
 	return []T(s)
 }
+
+func ToMap[T any, K comparable](list List[T], keyFunc func(T) K) Map[K, T] {
+	result := make(Map[K, T])
+	for _, item := range list {
+		result[keyFunc(item)] = item
+	}
+	return result
+}
+
+func GroupBy[T any, K comparable](list List[T], keyFunc func(T) K) Map[K, List[T]] {
+	result := make(Map[K, List[T]])
+	for _, item := range list {
+		key := keyFunc(item)
+		result[key] = append(result[key], item)
+	}
+	return result
+}
