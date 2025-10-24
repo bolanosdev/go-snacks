@@ -114,3 +114,11 @@ func GroupBy[T any, K comparable](list List[T], keyFunc func(T) K) Map[K, List[T
 	}
 	return result
 }
+
+func Fold[T any, R any](list List[T], initial R, fn func(R, T) R) R {
+	acc := initial
+	for _, item := range list {
+		acc = fn(acc, item)
+	}
+	return acc
+}

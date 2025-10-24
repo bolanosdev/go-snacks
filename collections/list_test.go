@@ -138,3 +138,22 @@ func TestGroupBy(t *testing.T) {
 	require.True(t, ok)
 	require.Equal(t, 2, len(age30))
 }
+
+func TestFold(t *testing.T) {
+	list := List[int]{1, 2, 3, 4, 5}
+
+	sum := Fold(list, 0, func(acc int, item int) int {
+		return acc + item
+	})
+	require.Equal(t, 15, sum)
+
+	product := Fold(list, 1, func(acc int, item int) int {
+		return acc * item
+	})
+	require.Equal(t, 120, product)
+
+	str := Fold(List[string]{"a", "b", "c"}, "", func(acc string, item string) string {
+		return acc + item
+	})
+	require.Equal(t, "abc", str)
+}
