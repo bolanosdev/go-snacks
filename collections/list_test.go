@@ -49,7 +49,10 @@ func TestFindIndex(t *testing.T) {
 func TestSort(t *testing.T) {
 	list := List[int]{5, 3, 1, 4, 2}
 	sorted := list.Sort(func(a, b int) bool { return a < b })
-	require.Equal(t, List[int]{5, 3, 1, 4, 2}, sorted)
+	require.Equal(t, List[int]{1, 2, 3, 4, 5}, sorted)
+
+	sorted = list.Sort(func(a, b int) bool { return a > b })
+	require.Equal(t, List[int]{5, 4, 3, 2, 1}, sorted)
 }
 
 func TestAny(t *testing.T) {

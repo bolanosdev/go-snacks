@@ -1,6 +1,6 @@
 package collections
 
-import ()
+import "sort"
 
 type List[T any] []T
 
@@ -47,15 +47,13 @@ func (s List[T]) FindIndex(predicate func(T) bool) int {
 	return -1
 }
 
-// Sort sorts the slice using the provided less function
 func (s List[T]) Sort(less func(T, T) bool) List[T] {
 	result := make(List[T], len(s))
 	copy(result, s)
 
-	// sort.List(result, func(i, j int) bool {
-	// 	return less(result[i], result[j])
-	// })
-
+	sort.Slice(result, func(i, j int) bool {
+		return less(result[i], result[j])
+	})
 	return result
 }
 
@@ -94,4 +92,8 @@ func (s List[T]) Reverse() List[T] {
 		result[len(s)-1-i] = item
 	}
 	return result
+}
+
+func (s List[T]) Values() []T {
+	return []T(s)
 }
