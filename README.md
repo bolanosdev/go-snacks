@@ -39,6 +39,22 @@ reversed := list.Reverse()
 
 // Get underlying slice
 slice := list.Values()
+
+// ToMap - Convert list to map
+type Person struct {
+    ID   int
+    Name string
+}
+people := collections.List[Person]{{ID: 1, Name: "Alice"}, {ID: 2, Name: "Bob"}}
+m := collections.ToMap(people, func(p Person) int { return p.ID })
+
+// GroupBy - Group items by key
+grouped := collections.GroupBy(people, func(p Person) int { return p.ID % 2 })
+
+// Fold - Reduce list to single value
+sum := collections.Fold(list, 0, func(acc, item int) int {
+    return acc + item
+})
 ```
 
 #### Map Usage
