@@ -61,22 +61,9 @@ if m.Has("a") {
 keys := m.Keys()
 values := m.Values()
 
-// Filter
-filtered := m.Filter(func(k string, v int) bool {
-    return v > 1
-})
-
-// Find
-key, val, found := m.Find(func(k string, v int) bool {
-    return v == 2
-})
-
-// Any and All
-hasLarge := m.Any(func(k string, v int) bool { return v > 10 })
-allPositive := m.All(func(k string, v int) bool { return v > 0 })
-
-// Copy
+// Copy and Clear
 copied := m.Copy()
+m.Clear()
 ```
 
 ### AutoMapper
@@ -88,10 +75,17 @@ A type-safe mapper for transforming values between different types using reflect
 ```go
 import "github.com/bolanosdev/go-snacks/automapper"
 
-// Create mapper
-mapper := automapper.NewAutoMapper()
+// Create mapper with Configure
+configure := func(m *automapper.AutoMapper) error {
+    return m.AddMapper(func(n int) string {
+        return fmt.Sprintf("value-%d", n)
+    })
+}
 
-// Register mapping function
+mapper, err := automapper.New().Configure(configure)
+
+// Or create and configure separately
+mapper := automapper.New()
 err := mapper.AddMapper(func(n int) string {
     return fmt.Sprintf("value-%d", n)
 })

@@ -13,10 +13,17 @@ type AutoMapper struct {
 	mappers map[string]mapperFunc
 }
 
-func NewAutoMapper() *AutoMapper {
+func New() *AutoMapper {
 	return &AutoMapper{
 		mappers: make(map[string]mapperFunc),
 	}
+}
+
+func (m *AutoMapper) Configure(configure func(*AutoMapper) error) (*AutoMapper, error) {
+	if err := configure(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (m *AutoMapper) AddMapper(mapper interface{}) error {

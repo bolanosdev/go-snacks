@@ -24,17 +24,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Len()` - Get list length
   - `Sort(less)` - Sort with custom comparator (placeholder)
 
-- Generic `Map[K, V]` type wrapping maps with functional programming utilities
+- Generic `Map[K, V]` type wrapping maps with utility methods
   - `Get(key)` - Get value by key
   - `Set(key, value)` - Set key-value pair
   - `Delete(key)` - Delete key
   - `Has(key)` - Check if key exists
   - `Keys()` - Get all keys as slice
   - `Values()` - Get all values as slice
-  - `Filter(predicate)` - Filter entries based on predicate
-  - `Find(predicate)` - Find first entry matching predicate
-  - `Any(predicate)` - Check if any entry matches predicate
-  - `All(predicate)` - Check if all entries match predicate
   - `Clear()` - Remove all entries
   - `Copy()` - Create a shallow copy
   - `Len()` - Get map length

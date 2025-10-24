@@ -9,7 +9,7 @@ import (
 )
 
 func TestAutoMapperMap(t *testing.T) {
-	mapper := NewAutoMapper()
+	mapper := New()
 	err := mapper.AddMapper(func(it int) string { return fmt.Sprintf("value-%d", it) })
 	require.NoError(t, err)
 
@@ -20,7 +20,7 @@ func TestAutoMapperMap(t *testing.T) {
 }
 
 func TestAutoMapperAddError(t *testing.T) {
-	mapper := NewAutoMapper()
+	mapper := New()
 	err := mapper.AddMapper(func(it int) string { return "value" })
 	require.NoError(t, err)
 
@@ -30,7 +30,7 @@ func TestAutoMapperAddError(t *testing.T) {
 }
 
 func TestAutoMapperMapList(t *testing.T) {
-	mapper := NewAutoMapper()
+	mapper := New()
 	err := mapper.AddMapper(func(it int) string { return fmt.Sprintf("value-%d", it) })
 	require.NoError(t, err)
 
@@ -42,7 +42,7 @@ func TestAutoMapperMapList(t *testing.T) {
 }
 
 func TestAutoMapperMapListWithValues(t *testing.T) {
-	mapper := NewAutoMapper()
+	mapper := New()
 	err := mapper.AddMapper(func(it int) string { return fmt.Sprintf("value-%d", it) })
 	require.NoError(t, err)
 
@@ -51,4 +51,33 @@ func TestAutoMapperMapListWithValues(t *testing.T) {
 	err = mapper.MapList(list.Values(), &result)
 	require.NoError(t, err)
 	require.Equal(t, []string{"value-1", "value-2", "value-3", "value-4", "value-5"}, result)
+}
+
+func TestAutoMapperConfigure(t *testing.T) {
+	configure := func(m *AutoMapper) error {
+		return m.AddMapper(func(it int) string {
+			return fmt.Sprintf("value-%d", it)
+		})
+	}
+
+	mapper, err := New().Configure(configure)
+	require.NoError(t, err)
+
+	var result string
+	err = mapper.Map(5, &result)
+	require.NoError(t, err)
+	require.Equal(t, "value-5", result)
+}
+
+func TestAutoMapperConfigureError(t *testing.T) {
+	configure := func(m *AutoMapper) error {
+		if err := m.AddMapper(func(it int) string { return "value" }); err != nil {
+			return err
+		}
+		return m.AddMapper(func(it int) string { return "other" })
+	}
+
+	_, err := New().Configure(configure)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "mapper already registered")
 }
