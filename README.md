@@ -29,6 +29,12 @@ Observability utilities
 
 See [observability/README.md](./observability/README.md) for detailed usage.
 
+### [Storage](./storage)
+
+In-memory cache store for managing multiple named caches with different types. Thread-safe generic cache implementation with support for get, set, has, remove, and pop operations.
+
+See [storage/README.md](./storage/README.md) for detailed usage.
+
 ## Running Tests
 
 ```bash
