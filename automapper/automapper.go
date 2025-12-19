@@ -32,12 +32,20 @@ func (m *AutoMapper) AddMapper(mapper interface{}) error {
 		return errors.New("mapper must be a function")
 	}
 
-	if mapperType.NumIn() != 1 || mapperType.NumOut() != 1 {
-		return errors.New("mapper must have exactly one input and one output")
+	if mapperType.NumIn() != 1 || mapperType.NumOut() != 2 {
+		return errors.New("mapper must have exactly one input and two outputs (result, error)")
+	}
+
+	if mapperType.Out(1) != reflect.TypeOf((*error)(nil)).Elem() {
+		return errors.New("mapper's second return value must be error")
+	}
+
+	if mapperType.Out(0).Kind() != reflect.Ptr {
+		return errors.New("mapper's first return value must be a pointer")
 	}
 
 	sourceType := mapperType.In(0)
-	destType := mapperType.Out(0)
+	destType := mapperType.Out(0).Elem()
 	key := sourceType.String() + "->" + destType.String()
 
 	if _, exists := m.mappers[key]; exists {
@@ -67,7 +75,15 @@ func (m *AutoMapper) Map(source interface{}, dest interface{}) error {
 	fn := reflect.ValueOf(mapperFunc.fn)
 	result := fn.Call([]reflect.Value{reflect.ValueOf(source)})
 
-	reflect.ValueOf(dest).Elem().Set(result[0])
+	if !result[1].IsNil() {
+		return result[1].Interface().(error)
+	}
+
+	if result[0].IsNil() {
+		reflect.ValueOf(dest).Elem().Set(reflect.Zero(destElemType))
+	} else {
+		reflect.ValueOf(dest).Elem().Set(result[0].Elem())
+	}
 	return nil
 }
 

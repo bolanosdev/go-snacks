@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2025-12-18
+
+### Changed
+- **BREAKING**: AutoMapper mapper functions now return `(*R, error)` instead of `(R, error)`
+  - Mapper functions must return a pointer as the first value
+  - Allows returning `nil` to set destination to its zero value
+  - Enables better error handling in transformation logic
+  - Updated all tests and documentation to reflect new signature
+
 ## [1.0.5] - 2025-10-26
 
 ### Added
