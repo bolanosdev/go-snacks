@@ -60,6 +60,60 @@ logger.Warn().Msgf("threshold exceeded: %d", value)
 - `Msgf(format, ...args)` - Send log with formatted message
 - `Send()` - Send log without message
 
+## Tracing
+
+### JaegerObs
+
+OpenTelemetry-based tracing setup and helpers.
+
+#### Usage
+
+```go
+import (
+    "context"
+
+    "github.com/bolanosdev/go-snacks/observability/jaeger"
+)
+
+ctx := context.Background()
+
+tracer, err := jaeger.NewJaegerObs(ctx).
+    WithConfig(jaeger.JaegerConfig{
+        Name:     "my-service",
+        Hostname: "localhost:4317",
+        SensitiveKeywords: []string{"password", "token"},
+    }).
+    Initialize()
+if err != nil {
+    // handle missing/invalid jaeger configuration
+}
+
+ctx = tracer.TraceFunc(ctx)
+_ = tracer.TraceDB(ctx, "SELECT * FROM users WHERE id = ?", []any{123})
+```
+
+## Error Reporting
+
+### SentryObs
+
+Sentry client wrapper for capturing errors.
+
+#### Usage
+
+```go
+import "github.com/bolanosdev/go-snacks/observability/sentry"
+
+sentryObs, err := sentry.NewSentryObs(sentry.SentryConfig{
+    DSN: "<your-dsn>",
+})
+if err != nil {
+    // handle sentry initialization failure
+}
+defer sentryObs.Flush()
+
+sentryObs.CaptureError(err, 500)
+```
+
 ## Running Tests
 
 ```bash

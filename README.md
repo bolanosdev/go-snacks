@@ -24,8 +24,10 @@ See [automapper/README.md](./automapper/README.md) for detailed usage.
 
 ### [Observability](./observability)
 
-Observability utilities 
+Observability utilities
  - ContextLogger wrapper around zerolog that enforces trace ID inclusion in all log entries.
+ - JaegerObs OpenTelemetry-based tracing setup and helpers.
+ - SentryObs Sentry client wrapper for capturing errors.
 
 See [observability/README.md](./observability/README.md) for detailed usage.
 

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2025-12-30
+
+### Added
+- Observability updates
+  - Jaeger tracing utilities (`JaegerObs`) with configuration via `JaegerConfig`
+  - Sentry error reporting utilities (`SentryObs`) with configuration via `SentryConfig`
+
 ## [1.0.6] - 2025-12-18
 
 ### Changed
@@ -100,4 +107,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README.md with usage examples for all packages
 - CHANGELOG.md following Keep a Changelog format
 
+[1.0.7]: https://github.com/bolanosdev/go-snacks/releases/tag/v1.0.7
 [1.0.0]: https://github.com/bolanosdev/go-snacks/releases/tag/v1.0.0
